@@ -21,18 +21,19 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+
     :root {
-      --base: #ffc600;
       --spacing: 10px;
       --blur: 10px;
+      --base: #ffc600;
     }
-
+    
     img {
       padding: var(--spacing);
-      background: var(--base);
       filter: blur(var(--blur));
+      background: var(--base);
     }
-
+    
     .hl {
       color: var(--base);
     }
@@ -60,17 +61,18 @@
   </style>
 
   <script>
+    // Get inputs
     const inputs = document.querySelectorAll('.controls input');
-
+    
+    // Update the properties based on the input
     function handleUpdate() {
       const suffix = this.dataset.sizing || '';
       document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
     }
-
-    inputs.forEach(input => input.addEventListener('change', handleUpdate));
-    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+    
+    // Add event listeners to every input
+    inputs.forEach(input => input.addEventListener('input', handleUpdate));
   </script>
-
 
 </body>
 </html>
