@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+// Store the cities from the fetched data
+const cities = [];
+
+// Request and save the JSON file from the endpoint
+fetch(endpoint)
+  .then(dataInPromise => dataInPromise.json())
+  .then(data => data.forEach(city => cities.push(city)))
+
+// Get suggestions element
+const suggestionsUl = document.querySelector('.suggestions');
+
+// Get what the user typed in
+const userInputElement = document.querySelector('.search');
+userInputElement.addEventListener('input', function(e) {
+  suggestionsUl.innerHTML = '';
+
+  // Filter for city or state
+  let results = cities.filter(city => city.city.toUpperCase().includes(e.target.value.toUpperCase()) || city.state.toUpperCase().includes(e.target.value.toUpperCase()));
+
+  // Display on page
+  results.forEach(result => {
+    const liElement = document.createElement('li');
+    const spanPopulation = document.createElement('span');
+    liElement.innerHTML = `${result.city}, ${result.state}`;
+
+    // Add population
+    spanPopulation.textContent = result.population;
+    spanPopulation.classList.add('population');
+    liElement.appendChild(spanPopulation);
+
+    suggestionsUl.appendChild(liElement);
+  });
+});
+</script>
+  </body>
+</html>
