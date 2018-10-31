@@ -21,16 +21,16 @@
     console.log('hello');
 
     // Interpolated
-    console.log('Hello I am a %s string!', '💩');
+    console.log('Hello I am a %s string', 'cool');
 
     // Styled
-    // console.log('%c I am some great text', 'font-size:50px; background:red; text-shadow: 10px 10px 0 blue')
+    console.log('%c Really big', 'font-size: 25px; background: red');
 
     // warning!
-    console.warn('OH NOOO');
+    console.warn('OH MY GOD!');
 
     // Error :|
-    console.error('Shit!');
+    console.error('STOOOOOP!!!!');
 
     // Info
     console.info('Crocodiles eat 3-4 people per year');
@@ -47,11 +47,9 @@
     console.log(p);
     console.dir(p);
 
-    console.clear();
-
     // Grouping together
     dogs.forEach(dog => {
-      console.groupCollapsed(`${dog.name}`);
+      console.groupCollapsed(`${dog.name}`)
       console.log(`This is ${dog.name}`);
       console.log(`${dog.name} is ${dog.age} years old`);
       console.log(`${dog.name} is ${dog.age * 7} dog years old`);
@@ -59,23 +57,18 @@
     });
 
     // counting
-
-    console.count('Wes');
-    console.count('Wes');
-    console.count('Steve');
-    console.count('Steve');
-    console.count('Wes');
-    console.count('Steve');
-    console.count('Wes');
-    console.count('Steve');
-    console.count('Steve');
-    console.count('Steve');
-    console.count('Steve');
-    console.count('Steve');
+    console.count('Nick');
+    console.count('Nick');
+    console.count('Ali');
+    console.count('Nick');
+    console.count('Pali');
+    console.count('Nick');
+    console.count('Ali');
+    console.count('Nick');
 
     // timing
     console.time('fetching data');
-    fetch('https://api.github.com/users/wesbos')
+    fetch('https://api.github.com/users/mikitor')
       .then(data => data.json())
       .then(data => {
         console.timeEnd('fetching data');
