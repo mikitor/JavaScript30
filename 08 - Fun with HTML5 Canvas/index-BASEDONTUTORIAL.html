@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+// Get canvas
+const canvas = document.querySelector('#draw');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Save last position
+let lastX = 0;
+let lastY = 0;
+let isDown = false;
+let line = 10;
+let direction = true;
+let hue = 0;
+
+// Specify the brush
+ctx.lineJoin = "round";
+ctx.lineCap = "round";
+
+// Draw on the canvas
+function draw(e) {
+  if (!isDown) return;
+  let currentX = e.offsetX;
+  let currentY = e.offsetY;
+  ctx.beginPath();
+  ctx.lineWidth = line;
+  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(currentX, currentY);
+  ctx.stroke();
+  lastX = currentX;
+  lastY = currentY;
+
+  if (line === 100) {
+    direction = false;
+  } else if (line === 10) {
+    direction = true;
+  }
+
+  if (direction) {
+    line++;
+  } else {
+    line--;
+  }
+
+  hue++;
+}
+
+// Specify the actions i response to different events
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mousedown', (e) => {
+  isDown = true;
+  lastX = e.offsetX;
+  lastY = e.offsetY;
+});
+canvas.addEventListener('mouseout', () => isDown = false);
+canvas.addEventListener('mouseup', () => isDown = false);
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
