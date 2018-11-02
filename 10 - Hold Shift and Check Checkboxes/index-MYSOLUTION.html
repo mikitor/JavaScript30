@@ -96,6 +96,36 @@
   </div>
 
 <script>
+  // Grab the items
+  const items = document.querySelectorAll('.item');
+  let previousIndex;
+  let currentIndex;
+  
+  // If I check an input 
+  items.forEach(item => item.addEventListener('change', e => {
+    if (e.target.checked || !previousIndex) {
+      currentIndex = [...e.target.parentNode.parentNode.children].indexOf(e.target.parentNode);
+    }
+
+    // All the items between 2 checked items get checked
+    if (previousIndex) {
+      let cut = Array.prototype.slice.call(items);
+      if (previousIndex < currentIndex) {
+        cut = cut.slice(previousIndex, currentIndex);
+      } else {
+        cut = cut.slice(currentIndex, previousIndex);
+      }
+      cut.forEach(item => item.children[0].checked = true);
+    }
+  }));
+
+  // Hold shift
+  window.addEventListener('keydown', e => {
+    if (e.key === "Shift" ) {
+      previousIndex = currentIndex;
+    };
+  });
+
 </script>
 </body>
 </html>
