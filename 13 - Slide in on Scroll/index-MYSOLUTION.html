@@ -43,6 +43,28 @@
   </div>
 
   <script>
+    // Get the images
+    const images = document.querySelectorAll('.slide-in');
+
+    // Check if at least half of the image is in the window
+    function isInView(element) {
+      const bounding = element.getBoundingClientRect();
+      return ((bounding.top >= - bounding.height / 2) && 
+        (bounding.bottom <= window.innerHeight + bounding.height / 2));
+    }
+
+    // Slide the images in which are in the current window
+    function slideIn() {
+      images.forEach(image => {
+        if (isInView(image)) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        }
+      });
+    }
+
+    // Make the scroll event call the slideIn function less often to save resources
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -56,27 +78,10 @@
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
-    };
-
-    const sliderImages = document.querySelectorAll('.slide-in');
-
-    function checkSlide() {
-      sliderImages.forEach(sliderImage => {
-        // half way through the image
-        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
-        // bottom of the image
-        const imageBottom = sliderImage.offsetTop + sliderImage.height;
-        const isHalfShown = slideInAt > sliderImage.offsetTop;
-        const isNotScrolledPast = window.scrollY < imageBottom;
-        if (isHalfShown && isNotScrolledPast) {
-          sliderImage.classList.add('active');
-        } else {
-          sliderImage.classList.remove('active');
-        }
-      });
     }
 
-    window.addEventListener('scroll', debounce(checkSlide));
+    // Listen for scroll events
+    window.addEventListener('scroll', debounce(slideIn));
 
   </script>
 
