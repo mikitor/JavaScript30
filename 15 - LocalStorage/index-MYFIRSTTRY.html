@@ -28,46 +28,87 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = JSON.parse(localStorage.getItem('items')) || [];
+  const items = [];
 
-  function addItem(e) {
+  // MODEL
+  function writeLocalStorage(data) {
+    let keysLength = Object.keys(localStorage);
+    localStorage.setItem(keysLength.length, JSON.stringify(data));
+  }
+
+  function readLocalStorage() {
+    // Get every key from localStorage
+    let keys = Object.keys(localStorage);
+
+    // Save them to items array
+    items.length = 0;
+    keys.forEach(key => items.push(localStorage.getItem(key)));
+  }
+
+  // VIEW
+  function displayList() {
+    itemsList.innerHTML = '';
+    items.forEach(item => {
+      const liElement = document.createElement('li');
+      const checkboxElement = document.createElement('input');
+      const labelElement = document.createElement('label');
+      const itemName = JSON.parse(item).name;
+
+      // Configure checkbox
+      checkboxElement.type = "checkbox";
+      checkboxElement.value = itemName;
+      checkboxElement.id = itemName;
+      if (JSON.parse(item).status == true) {
+        checkboxElement.checked = true;
+      } else {
+        checkboxElement.checked = false;
+      }
+      liElement.appendChild(checkboxElement);
+
+      // Configure label
+      labelElement.setAttribute('for', itemName);
+      labelElement.innerHTML = itemName;
+      liElement.appendChild(labelElement);
+
+      itemsList.appendChild(liElement);
+    })
+  }
+
+  // CONTROL
+  itemsList.addEventListener('click', e => {
+    if (e.target.tagName === "INPUT") {
+      const index = Object.keys(localStorage).find(key => JSON.parse(localStorage[key]).name === e.target.id);
+      const data = {'name': e.target.id, 'status': true};
+
+      if (e.target.checked) {
+        data.status = true;
+      } else {
+        data.status = false;
+      }
+
+      localStorage.setItem(index, JSON.stringify(data));
+    }
+  })
+
+  addItems.addEventListener('submit', e => {
+    // Prevent reloading the screen when submitting
     e.preventDefault();
-    const text = (this.querySelector('[name=item]')).value;
-    const item = {
-      text,
-      done: false
-    };
 
-    items.push(item);
-    populateList(items, itemsList);
-    localStorage.setItem('items', JSON.stringify(items));
-    this.reset();
-  }
+    const input = e.target.children[0].value;
+    const newPlate = {
+      'name': input,
+      'status': false,
+    }
 
-  function populateList(plates = [], platesList) {
-    platesList.innerHTML = plates.map((plate, i) => {
-      return `
-        <li>
-          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
-          <label for="item${i}">${plate.text}</label>
-        </li>
-      `;
-    }).join('');
-  }
+    writeLocalStorage(newPlate);
+    readLocalStorage();
+    displayList();
+    addItems.children[0].value = '';
+  });
 
-  function toggleDone(e) {
-    if (!e.target.matches('input')) return; // skip this unless it's an input
-    const el = e.target;
-    const index = el.dataset.index;
-    items[index].done = !items[index].done;
-    localStorage.setItem('items', JSON.stringify(items));
-    populateList(items, itemsList);
-  }
-
-  addItems.addEventListener('submit', addItem);
-  itemsList.addEventListener('click', toggleDone);
-
-  populateList(items, itemsList);
+  // Load the data when the window is loaded
+  readLocalStorage();
+  displayList();
 
 </script>
 
