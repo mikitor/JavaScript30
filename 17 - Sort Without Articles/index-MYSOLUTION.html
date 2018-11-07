@@ -47,7 +47,38 @@
 
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+const bandsList = document.querySelector('#bands');
 
+// Sort out "a, an, the" from the array
+function filterWord(word) {
+  const wordInLowerCase = word.toLowerCase();
+  if (word.startsWith('A ') || word.startsWith('An ') || word.startsWith('The ')) {
+    return word.split(' ').slice(1).join(' ');
+  } else {
+    return word;
+  }
+}
+
+function sortBands(a, b) {
+  const normalNameA = filterWord(a);
+  const normalNameB = filterWord(b);
+  if (normalNameA > normalNameB) {
+    return 1;
+  } else if (normalNameA < normalNameB) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+bands.sort(sortBands);
+
+// Paste the bands into the page
+bands.forEach(band => {
+  const liElement = document.createElement('li');
+  liElement.textContent = band;
+  bandsList.appendChild(liElement);
+})
 
 </script>
 
