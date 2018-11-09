@@ -182,6 +182,30 @@
     </li>
   </ul>
 <script>
+
+const element = document.querySelectorAll('li');
+const seconds = [];
+
+element.forEach(li => {
+  const values = li.dataset.time.split(':').map((time, index) => {
+    let timeAsNumber = Number(time);
+    if (index === 0) {
+      return timeAsNumber * 60;
+    } else {
+      return timeAsNumber;
+    }
+  }).reduce((accumulator, currentValue) => accumulator + currentValue);
+  seconds.push(values);
+})
+
+const totalSeconds = seconds.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+const sec = totalSeconds % 60;
+const min = ((totalSeconds - sec) % 3600) / 60;
+const hour = Math.floor(totalSeconds / 3600);
+
+console.log(`The total time is ${hour} hours ${min} minutes ${sec} seconds`);
+
 </script>
 </body>
 </html>
