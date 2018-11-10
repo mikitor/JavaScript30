@@ -12,6 +12,22 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const text = document.querySelector('.words');
+
+  const recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.lang = 'en-US';
+  recognition.interimResults = true;
+
+  recognition.onresult = function(event) {
+    text.innerHTML = '';
+    for (let i = 0; i < event.results.length; i++) {
+      let words = event.results[i][0].transcript;
+      text.innerHTML += `<p>${words}</p>`;
+    }
+  }
+
+  recognition.start();
 
 </script>
 
