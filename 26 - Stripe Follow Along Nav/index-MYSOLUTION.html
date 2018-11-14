@@ -158,6 +158,7 @@
     border-radius: 4px;
     box-shadow: 0 50px 100px rgba(50,50,93,.1), 0 15px 35px rgba(50,50,93,.15), 0 5px 15px rgba(0,0,0,.1);
     transition: all 0.3s, opacity 0.1s, transform 0.2s;
+    transition-timing-function: cubic-bezier(.22,.68,0,1.2);
     transform-origin: 50% 0;
     display: flex;
     justify-content: center;
@@ -220,6 +221,29 @@
 </style>
 
 <script>
+  const dropdowns = document.querySelectorAll('.cool li');
+  const background = document.querySelector('.dropdownBackground');
+
+  function showDropdown() {
+    if (this.classList.contains('trigger-enter-active')) {
+      this.classList.remove('trigger-enter-active');
+      this.classList.remove('trigger-enter');
+      background.classList.remove('open');
+    } else {
+      this.classList.add('trigger-enter');
+      const coordinates = this.querySelector('.dropdown').getBoundingClientRect();
+      background.style.marginTop = `${this.offsetHeight}px`;
+      background.style.marginLeft = coordinates.left + 'px';
+      background.style.width = coordinates.width + 'px';
+      background.style.height = coordinates.height + 'px';
+      background.classList.add('open');
+      this.classList.add('trigger-enter-active');
+    }    
+  }
+
+  dropdowns.forEach(dropdown => dropdown.addEventListener('mouseover', showDropdown));
+  dropdowns.forEach(dropdown => dropdown.addEventListener('mouseout', showDropdown));
+
 </script>
 
 </body>
