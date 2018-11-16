@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+  const video = document.querySelector('video');
+  const speedDiv = document.querySelector('.speed');
+  const speedBar = document.querySelector('.speed-bar');
+
+  // Set speed limits
+  const maxSpeed = 4;
+  const minSpeed = 0.5;
+
+  // Set speedbar height limit
+  speedBar.style.minHeight = `${minSpeed * 10}%`;
+
+  function handleSpeed(e) {
+    const speedMultiplier = parseFloat(e.offsetY / this.offsetHeight);
+
+    // Calculate the playback rate
+    const speed = (speedMultiplier * (maxSpeed - minSpeed) + minSpeed).toFixed(1);
+    
+    // Set playback rate
+    video.playbackRate = speed;
+
+    // Specify speedbar properties 
+    speedBar.textContent = `${speed}x`;
+    speedBar.style.height = `${speedMultiplier * 100}%`;
+  }
+
+  speedDiv.addEventListener('mousemove', handleSpeed);
+</script>
+</body>
+</html>
