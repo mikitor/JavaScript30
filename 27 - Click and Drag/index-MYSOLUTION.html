@@ -35,36 +35,31 @@
   </div>
 
 <script>
-  const slider = document.querySelector('.items');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+  const itemCollection = document.querySelectorAll('.item');
+  const items = document.querySelector('.items')
+  // Store last horizontal position and mousedown state
+  let mouseDown;
+  let lastX;
 
-  slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
+  function horizontalScroll(e) {
+    const currentX = e.clientX;
+    if (mouseDown) {
+      // Calculate the difference between current and last horizontal mouse position
+      items.scrollBy(lastX - currentX, 0);
+      lastX = e.clientX;
+    }
+  }
+
+  itemCollection.forEach(item => item.addEventListener('mousedown', (e) => {
+    mouseDown = true;
+    items.classList.add('active');
+    lastX = e.clientX;
+  }));
+  window.addEventListener('mousemove', horizontalScroll);
+  window.addEventListener('mouseup', () => {
+    mouseDown = false
+    items.classList.remove('active');  
   });
-
-  slider.addEventListener('mouseleave', () => {
-    isDown = false;
-    slider.classList.remove('active');
-  });
-
-  slider.addEventListener('mouseup', () => {
-    isDown = false;
-    slider.classList.remove('active');
-  });
-
-  slider.addEventListener('mousemove', (e) => {
-    if (!isDown) return;  // stop the fn from running
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 3;
-    slider.scrollLeft = scrollLeft - walk;
-  });
-
 </script>
 
   </body>
