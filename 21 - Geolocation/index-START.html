@@ -59,6 +59,20 @@
     /*Compass: https://thenounproject.com/search/?q=compass&i=592352*/
   </style>
   <script>
+    const arrow = document.querySelector('.arrow');
+    const speed = document.querySelector('.speed-value');
+
+    if ('geolocation' in navigator) {
+      navigator.geolocation.watchPosition((position) => {
+        arrow.style.transform = `rotate(${position.coords.heading}deg)`;
+        speed.textContent = position.coords.speed;
+      }, (error) => {
+        console.log(error);
+        alert('Please, enable your location services!');
+      });
+    } else {
+      console.error('No geolocation services detected');
+    }
   </script>
 </body>
 </html>
